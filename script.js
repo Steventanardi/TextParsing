@@ -11,13 +11,24 @@ async function parseText() {
             const [dateTime, agent] = line.split(' - ');
             const [date, time] = dateTime.split(', ');
             saveParsedText({ date, time, agent: match[1] });
-            return `<strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${match[1]}`;
+            return `<div class="alert alert-info"><strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${match[1]}</div>`;
         }
         return '';
     }).filter(line => line !== '');
 
-    parsedResultDiv.innerHTML = parsedLines.join('<br>');
+    parsedResultDiv.innerHTML = parsedLines.join('');
 }
+
+async function saveParsedText(parsedText) {
+    await fetch(`${apiUrl}/texts`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(parsedText)
+    });
+}
+
 
 async function saveParsedText(parsedText) {
     await fetch(`${apiUrl}/texts`, {

@@ -20,14 +20,14 @@ async function searchText() {
 function displayParsedTexts(results) {
     const allParsedTextsDiv = document.getElementById('allParsedTexts');
     allParsedTextsDiv.innerHTML = results.map(result => `
-        <div>
-            <strong>Date:</strong> ${result.date}
-            <strong>Time:</strong> ${result.time}
-            <strong>Agent:</strong> ${result.agent}
-            <button onclick="deleteText(${result.id})">Delete</button>
-            <button onclick="editText(${result.id})">Edit</button>
+        <div class="alert alert-secondary">
+            <strong>Date:</strong> ${result.date} <br>
+            <strong>Time:</strong> ${result.time} <br>
+            <strong>Agent:</strong> ${result.agent} <br>
+            <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm mt-2">Delete</button>
+            <button onclick="editText(${result.id})" class="btn btn-warning btn-sm mt-2">Edit</button>
         </div>
-    `).join('<br>');
+    `).join('');
 }
 
 async function deleteText(id) {
