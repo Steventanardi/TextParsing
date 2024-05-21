@@ -36,13 +36,13 @@ app.post('/texts', (req, res) => {
 
 // Update parsed text
 app.put('/texts/:id', (req, res) => {
-        const { id } = req.params;
-        const { date, time, agent } = req.body;
-        db.query('UPDATE parsed_texts SET date = ?, time = ?, agent = ? WHERE id = ?', [date, time, agent, id], (err, result) => {
-            if (err) throw err;
-            res.json({ id, date, time, agent });
-        });
+    const { id } = req.params;
+    const { date, time, agent } = req.body;
+    db.query('UPDATE parsed_texts SET date = ?, time = ?, agent = ? WHERE id = ?', [date, time, agent, id], (err, result) => {
+        if (err) throw err;
+        res.json({ id, date, time, agent });
     });
+});
 
 // Delete parsed text
 app.delete('/texts/:id', (req, res) => {

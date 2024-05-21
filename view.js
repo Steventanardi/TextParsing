@@ -5,16 +5,26 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 async function loadAllParsedTexts() {
-    const response = await fetch(`${apiUrl}/texts`);
-    const results = await response.json();
-    displayParsedTexts(results);
+    try {
+        const response = await fetch(`${apiUrl}/texts`);
+        const results = await response.json();
+        console.log('All parsed texts:', results); // Log results for debugging
+        displayParsedTexts(results);
+    } catch (error) {
+        console.error('Error fetching all parsed texts:', error); // Log errors for debugging
+    }
 }
 
 async function searchText() {
     const searchTerm = document.getElementById('searchTerm').value;
-    const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
-    const results = await response.json();
-    displayParsedTexts(results);
+    try {
+        const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
+        const results = await response.json();
+        console.log('Search results:', results); // Log results for debugging
+        displayParsedTexts(results);
+    } catch (error) {
+        console.error('Error fetching search results:', error); // Log errors for debugging
+    }
 }
 
 function displayParsedTexts(results) {

@@ -31,9 +31,14 @@ async function saveParsedText(parsedText) {
 
 async function searchText() {
     const searchTerm = document.getElementById('searchTerm').value;
-    const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
-    const results = await response.json();
-    displaySearchResults(results);
+    try {
+        const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
+        const results = await response.json();
+        console.log('Search results:', results); // Log results for debugging
+        displaySearchResults(results);
+    } catch (error) {
+        console.error('Error fetching search results:', error); // Log errors for debugging
+    }
 }
 
 function displaySearchResults(results) {
