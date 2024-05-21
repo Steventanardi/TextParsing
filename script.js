@@ -20,13 +20,19 @@ async function parseText() {
 }
 
 async function saveParsedText(parsedText) {
-    await fetch(`${apiUrl}/texts`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(parsedText)
-    });
+    try {
+        const response = await fetch(`${apiUrl}/texts`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(parsedText)
+        });
+        const result = await response.json();
+        console.log('Saved parsed text:', result); // Log the result for debugging
+    } catch (error) {
+        console.error('Error saving parsed text:', error); // Log errors for debugging
+    }
 }
 
 async function searchText() {
