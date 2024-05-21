@@ -43,7 +43,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-#parsedResult {
+#parsedResult, #searchResult, #allParsedTexts {
     margin-top: 20px;
     padding: 10px;
     border-radius: 4px;

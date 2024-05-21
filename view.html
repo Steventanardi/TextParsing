@@ -3,19 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Parsing App</title>
+    <title>View Parsed Texts</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Text Parsing App</h1>
-        <textarea id="inputText" placeholder="Paste your text here..."></textarea>
-        <button onclick="parseText()">Parse Text</button>
-        <a href="view.html">View Parsed Texts</a>
+        <h1>View Parsed Texts</h1>
         <input type="text" id="searchTerm" placeholder="Search..." oninput="searchText()">
-        <div id="parsedResult"></div>
         <div id="searchResult"></div>
+        <div id="allParsedTexts"></div>
     </div>
-    <script src="script.js"></script>
+    <script src="view.js"></script>
 </body>
 </html>
