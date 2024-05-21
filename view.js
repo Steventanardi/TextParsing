@@ -29,36 +29,50 @@ async function searchText() {
 
 function displayParsedTexts(results) {
     const allParsedTextsDiv = document.getElementById('allParsedTexts');
-    allParsedTextsDiv.innerHTML = results.map(result => `
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
-                <p class="card-text"><strong>Time:</strong> ${result.time}</p>
-                <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
-                <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
-                <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
+    if (results.length === 0) {
+        allParsedTextsDiv.innerHTML = '<p>No results found</p>';
+    } else {
+        allParsedTextsDiv.innerHTML = results.map(result => `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
+                    <p class="card-text"><strong>Time:</strong> ${result.time}</p>
+                    <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
+                    <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
+                    <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 }
 
 async function deleteText(id) {
-    await fetch(`${apiUrl}/texts/${id}`, {
-        method: 'DELETE'
-    });
-    loadAllParsedTexts();
+    try {
+        await fetch(`${apiUrl}/texts/${id}`, {
+            method: 'DELETE'
+        });
+        console.log('Deleted text with id:', id); // Log deletion
+        loadAllParsedTexts();
+    } catch (error) {
+        console.error('Error deleting text:', error); // Log errors for debugging
+    }
 }
 
 async function editText(id) {
     const date = prompt('Enter new date:');
     const time = prompt('Enter new time:');
     const agent = prompt('Enter new agent:');
-    await fetch(`${apiUrl}/texts/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ date, time, agent })
-    });
-    loadAllParsedTexts();
+    try {
+        await fetch(`${apiUrl}/texts/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ date, time, agent })
+        });
+        console.log('Updated text with id:', id); // Log update
+        loadAllParsedTexts();
+    } catch (error) {
+        console.error('Error updating text:', error); // Log errors for debugging
+    }
 }
