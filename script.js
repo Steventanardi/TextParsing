@@ -29,17 +29,6 @@ async function saveParsedText(parsedText) {
     });
 }
 
-
-async function saveParsedText(parsedText) {
-    await fetch(`${apiUrl}/texts`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(parsedText)
-    });
-}
-
 async function searchText() {
     const searchTerm = document.getElementById('searchTerm').value;
     const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
@@ -50,14 +39,16 @@ async function searchText() {
 function displaySearchResults(results) {
     const searchResultDiv = document.getElementById('searchResult');
     searchResultDiv.innerHTML = results.map(result => `
-        <div>
-            <strong>Date:</strong> ${result.date}
-            <strong>Time:</strong> ${result.time}
-            <strong>Agent:</strong> ${result.agent}
-            <button onclick="deleteText(${result.id})">Delete</button>
-            <button onclick="editText(${result.id})">Edit</button>
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
+                <p class="card-text"><strong>Time:</strong> ${result.time}</p>
+                <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
+                <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
+                <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
+            </div>
         </div>
-    `).join('<br>');
+    `).join('');
 }
 
 async function deleteText(id) {
