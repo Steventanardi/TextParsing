@@ -11,7 +11,9 @@
         <h1>Text Parsing App</h1>
         <textarea id="inputText" placeholder="Paste your text here..."></textarea>
         <button onclick="parseText()">Parse Text</button>
+        <input type="text" id="searchTerm" placeholder="Search..." oninput="searchText()">
         <div id="parsedResult"></div>
+        <div id="searchResult"></div>
     </div>
     <script src="script.js"></script>
 </body>
