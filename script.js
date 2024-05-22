@@ -10,14 +10,14 @@ function parseText(text) {
                 entries.push(currentEntry);
             }
             currentEntry = {
-                id: Date.now() + Math.random(),
+                id: Date.now() + Math.random(), // unique ID for each entry
                 date: match[1],
                 time: match[2],
                 agent: match[3],
                 description: match[4]
             };
         } else if (currentEntry) {
-            currentEntry.description += '\n' + line;
+            currentEntry.description += '\n' + line; // append continued text to the description
         }
     }
 
@@ -31,36 +31,44 @@ function parseText(text) {
 function parseAndStoreText() {
     const text = document.getElementById('inputText').value;
     const parsedEntries = parseText(text);
+    console.log("Parsed entries:", parsedEntries); // Debug: log parsed entries
+
     try {
         let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+        console.log("Previously stored entries before adding new:", storedEntries); // Debug: log stored entries before update
         storedEntries = storedEntries.concat(parsedEntries);
         localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
         displayParsedTexts(storedEntries, 'parsedResult');
+        console.log("All stored entries after update:", storedEntries); // Debug: log all stored entries after update
     } catch (e) {
         console.error('Failed to parse or save parsed texts', e);
         // Optionally, handle the error more gracefully in the UI
     }
 }
 
-
 function displayParsedTexts(entries, elementId) {
     const parsedResultDiv = document.getElementById(elementId);
-    parsedResultDiv.innerHTML = entries.map(Entry => `
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title"><strong>Date:</strong> ${Entry.date}</h5>
-                <p class="card-text"><strong>Time:</strong> ${Entry.time}</p>
-                <p class="card-text"><strong>Agent:</strong> ${Entry.agent}</p>
-                <p class="card-text"><strong>Description:</strong> ${Entry.description || 'N/A'}</p>
+    if (entries.length === 0) {
+        parsedResultDiv.innerHTML = '<p>No parsed results to display.</p>';
+    } else {
+        parsedResultDiv.innerHTML = entries.map(entry => `
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Date:</strong> ${entry.date}</h5>
+                    <p class="card-text"><strong>Time:</strong> ${entry.time}</p>
+                    <p class="card-text"><strong>Agent:</strong> ${entry.agent}</p>
+                    <p class="card-text"><strong>Description:</strong> ${entry.description || 'N/A'}</p>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 }
 
 function clearAllData() {
     localStorage.removeItem('parsedTexts');
-    document.getElementById('parsedResult').innerHTML = '';
+    document.getElementById('parsedResult').innerHTML = 'All stored data has been cleared.';
 }
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
     loadAllParsedTexts();
