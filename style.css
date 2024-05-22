@@ -1,3 +1,4 @@
+/* Position the home button in the top left corner */
 .top-left-button {
     position: absolute;
     top: 20px;
@@ -7,6 +8,17 @@
     font-size: 16px;
 }
 
+/* Position the create button in the top right corner */
+.top-right-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    height: 40px;
+    font-size: 16px;
+}
+
+/* Scrollable container for parsed texts */
 .scrollable-container {
     max-height: 600px; /* Increase the maximum height to show more entries */
     overflow-y: auto; /* Enable vertical scrolling */
