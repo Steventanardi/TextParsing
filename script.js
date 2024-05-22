@@ -50,18 +50,8 @@ function parseAndDisplayText(text, parsedResultDiv) {
                         <p><strong>LT:</strong> ${propertyDetails.landArea || 'N/A'}</p>
                         <p><strong>LB:</strong> ${propertyDetails.buildingArea || 'N/A'}</p>
                         <p><strong>PLN:</strong> ${propertyDetails.pln || 'N/A'}</p>
-                        <p><strong>Land Shape:</strong> ${propertyDetails.landShape || 'N/A'}</p>
-                        <p><strong>Entrance Direction:</strong> ${propertyDetails.entranceDirection || 'N/A'}</p>
-                        <p><strong>Building Direction:</strong> ${propertyDetails.buildingDirection || 'N/A'}</p>
-                        <p><strong>Previous Use:</strong> ${propertyDetails.previousUse || 'N/A'}</p>
-                        <p><strong>Road Access:</strong> ${propertyDetails.roadAccess || 'N/A'}</p>
-                        <p><strong>Distance:</strong> ${propertyDetails.distance || 'N/A'}</p>
-                        <p><strong>Nearby:</strong> ${propertyDetails.nearby || 'N/A'}</p>
-                        <p><strong>Video Link:</strong> ${propertyDetails.videoLink || 'N/A'}</p>
                         <p><strong>Contact:</strong> ${propertyDetails.contact || 'N/A'}</p>
                         <p><strong>Phone:</strong> ${propertyDetails.phone || 'N/A'}</p>
-                        <p><strong>Instagram:</strong> ${propertyDetails.instagram || 'N/A'}</p>
-                        <p><strong>YouTube:</strong> ${propertyDetails.youtube || 'N/A'}</p>
                     </div>
                 </div>`;
     }).filter(line => line !== '');
@@ -76,18 +66,8 @@ function parsePropertyText(text) {
         landArea: null,
         buildingArea: null,
         pln: null,
-        landShape: null,
-        entranceDirection: null,
-        buildingDirection: null,
-        previousUse: null,
-        roadAccess: null,
-        distance: null,
-        nearby: null,
-        videoLink: null,
         contact: null,
         phone: null,
-        instagram: null,
-        youtube: null,
     };
 
     // Regular expressions to capture each detail
@@ -97,18 +77,8 @@ function parsePropertyText(text) {
         landArea: /LT\s*:\s*([\d,]+)\s*m2/i,
         buildingArea: /LB\s*:\s*([\d,]+)\s*m2/i,
         pln: /PLN\s*:\s*(.*)/i,
-        landShape: /Bentuk Tanah\s*:\s*(.*)/i,
-        entranceDirection: /Pintu masuk\s*:\s*(.*)/i,
-        buildingDirection: /bangunan produksi\s*:\s*(.*)/i,
-        previousUse: /Ex\s*:\s*(.*)/i,
-        roadAccess: /Jalan\s*:\s*(.*)/i,
-        distance: /\+\- ([\d,]+)\s*m dari/i,
-        nearby: /Dekat\s*:\s*(.*)/i,
-        videoLink: /For watching, Pls click\s*(.*)/i,
         contact: /Contact\s*:\s*(.*)/i,
         phone: /wa.me\/(\+\d+)/i,
-        instagram: /IG\s*:\s*(.*)/i,
-        youtube: /YouTube\s*:\s*(.*)/i,
     };
 
     // Loop through each regular expression and apply it to the text
@@ -165,18 +135,8 @@ function displaySearchResults(results) {
                     <p class="card-text"><strong>LT:</strong> ${result.landArea || 'N/A'}</p>
                     <p class="card-text"><strong>LB:</strong> ${result.buildingArea || 'N/A'}</p>
                     <p class="card-text"><strong>PLN:</strong> ${result.pln || 'N/A'}</p>
-                    <p class="card-text"><strong>Land Shape:</strong> ${result.landShape || 'N/A'}</p>
-                    <p class="card-text"><strong>Entrance Direction:</strong> ${result.entranceDirection || 'N/A'}</p>
-                    <p class="card-text"><strong>Building Direction:</strong> ${result.buildingDirection || 'N/A'}</p>
-                    <p class="card-text"><strong>Previous Use:</strong> ${result.previousUse || 'N/A'}</p>
-                    <p class="card-text"><strong>Road Access:</strong> ${result.roadAccess || 'N/A'}</p>
-                    <p class="card-text"><strong>Distance:</strong> ${result.distance || 'N/A'}</p>
-                    <p class="card-text"><strong>Nearby:</strong> ${result.nearby || 'N/A'}</p>
-                    <p class="card-text"><strong>Video Link:</strong> ${result.videoLink || 'N/A'}</p>
                     <p class="card-text"><strong>Contact:</strong> ${result.contact || 'N/A'}</p>
                     <p class="card-text"><strong>Phone:</strong> ${result.phone || 'N/A'}</p>
-                    <p class="card-text"><strong>Instagram:</strong> ${result.instagram || 'N/A'}</p>
-                    <p class="card-text"><strong>YouTube:</strong> ${result.youtube || 'N/A'}</p>
                     <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
                 </div>
             </div>
