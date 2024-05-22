@@ -68,6 +68,12 @@ function saveParsedText(parsedText) {
     localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
 }
 
+function clearAllData() {
+    localStorage.removeItem('parsedTexts');
+    document.getElementById('parsedResult').innerHTML = '';
+    document.getElementById('searchResult').innerHTML = '';
+}
+
 function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
@@ -131,39 +137,4 @@ function editText(id) {
         localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
         loadAllParsedTexts();
     }
-}
-
-function loadAllParsedTexts() {
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts);
-}
-
-function displayParsedTexts(results) {
-    const allParsedTextsDiv = document.getElementById('allParsedTexts');
-    if (results.length === 0) {
-        allParsedTextsDiv.innerHTML = '<p>No results found</p>';
-    } else {
-        allParsedTextsDiv.innerHTML = results.map(result => `
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
-                    <p class="card-text"><strong>Time:</strong> ${result.time}</p>
-                    <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
-                    <p class="card-text"><strong>LT:</strong> ${result.lt}</p>
-                    <p class="card-text"><strong>LB:</strong> ${result.lb}</p>
-                    <p class="card-text"><strong>Price:</strong> ${result.price}</p>
-                    <p class="card-text"><strong>Location:</strong> ${result.location}</p>
-                    <p class="card-text"><strong>SHM:</strong> ${result.shm}</p>
-                    <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
-                    <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
-                </div>
-            </div>
-        `).join('');
-    }
-}
-
-function clearAllData() {
-    localStorage.removeItem('parsedTexts');
-    document.getElementById('parsedResult').innerHTML = '';
-    document.getElementById('searchResult').innerHTML = '';
 }
