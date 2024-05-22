@@ -17,7 +17,7 @@ function parseText() {
 }
 
 function parseAndDisplayText(text, parsedResultDiv) {
-    const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/;
+    const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/i;
     const messages = text.split('\n').reduce((acc, line) => {
         if (dateTimeAgentPattern.test(line)) {
             acc.push([line]);
@@ -72,13 +72,13 @@ function parsePropertyText(text) {
 
     // Regular expressions to capture each detail
     const regexps = {
-        price: /Harga\s*:\s*(.*)/i,
-        location: /Lokasi\s*:\s*(.*)/i,
-        landArea: /LT\s*:\s*([\d,]+)\s*m2/i,
-        buildingArea: /LB\s*:\s*([\d,]+)\s*m2/i,
-        pln: /PLN\s*:\s*(.*)/i,
-        contact: /Contact\s*:\s*(.*)/i,
-        phone: /wa.me\/(\+\d+)/i,
+        price: /\b(?:Harga|Hrg)\s*:\s*(.*)/i,
+        location: /\bLokasi\s*:\s*(.*)/i,
+        landArea: /\bLT\s*:\s*([\d,]+)\s*m2/i,
+        buildingArea: /\bLB\s*:\s*([\d,]+)\s*m2/i,
+        pln: /\bPLN\s*:\s*(.*)/i,
+        contact: /\bContact\s*:\s*(.*)/i,
+        phone: /\bwa.me\/(\+\d+)/i,
     };
 
     // Loop through each regular expression and apply it to the text
