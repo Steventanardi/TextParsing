@@ -85,29 +85,26 @@ function sendEmail(id) {
     if (textToSend) {
         const email = prompt("Enter the recipient's email address:");
         if (email) {
-            fetch('http://localhost:5000/send-email', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email: email,
-                    textData: `
-                        Date: ${textToSend.date}
-                        Time: ${textToSend.time}
-                        Agent: ${textToSend.agent}
-                        Description: ${textToSend.description}
-                    `
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert(data.message);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to send email');
-            });
+            const templateParams = {
+                to_email: email,
+                from_name: 'Text Parsing App',
+                subject: 'Parsed Text Data',
+                message_html: `
+                    <p><strong>Date:</strong> ${textToSend.date}</p>
+                    <p><strong>Time:</strong> ${textToSend.time}</p>
+                    <p><strong>Agent:</strong> ${textToSend.agent}</p>
+                    <p><strong>Description:</strong> ${textToSend.description}</p>
+                `
+            };
+
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    console.log('Email sent successfully:', response.status, response.text);
+                    alert('Email sent successfully');
+                }, function(error) {
+                    console.error('Failed to send email:', error);
+                    alert('Failed to send email');
+                });
         }
     }
 }
