@@ -1,21 +1,17 @@
-/* Position the home button in the top left corner */
-.top-left-button {
+/* Position the buttons in a line */
+.button-container {
     position: absolute;
     top: 20px;
     left: 20px;
-    width: 100px;
-    height: 40px;
-    font-size: 16px;
+    display: flex;
+    align-items: center;
 }
 
-/* Position the create button in the top right corner */
-.top-right-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+.top-left-button, .btn-success {
     width: 100px;
     height: 40px;
     font-size: 16px;
+    margin-right: 10px;
 }
 
 /* Scrollable container for parsed texts */
