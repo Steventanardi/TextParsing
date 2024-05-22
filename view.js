@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 async function loadAllParsedTexts() {
     try {
         const response = await fetch(`${apiUrl}/texts`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const results = await response.json();
         console.log('All parsed texts:', results); // Log results for debugging
         displayParsedTexts(results);
@@ -19,6 +22,9 @@ async function searchText() {
     const searchTerm = document.getElementById('searchTerm').value;
     try {
         const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const results = await response.json();
         console.log('Search results:', results); // Log results for debugging
         displayParsedTexts(results);
