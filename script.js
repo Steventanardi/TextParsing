@@ -66,7 +66,6 @@ function loadAllParsedTexts() {
     displayParsedTexts(parsedTexts);
 }
 
-
 function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
