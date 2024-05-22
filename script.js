@@ -60,6 +60,7 @@ function parseAndDisplayText(text, parsedResultDiv) {
 }
 
 function parsePropertyText(text) {
+    // Apply regex to clean and capture information
     const propertyDetails = {
         price: null,
         location: null,
@@ -81,9 +82,12 @@ function parsePropertyText(text) {
         phone: /\bwa.me\/(\+\d+)/i,
     };
 
+    // Convert the text to lowercase to ensure case-insensitive matching
+    const lowerCaseText = text.toLowerCase();
+
     // Loop through each regular expression and apply it to the text
     for (const [key, regexp] of Object.entries(regexps)) {
-        const match = text.match(regexp);
+        const match = lowerCaseText.match(regexp);
         if (match) {
             propertyDetails[key] = match[1].trim();
         }
