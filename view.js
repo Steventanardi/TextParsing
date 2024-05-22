@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts);
+    displayParsedTexts(parsedTexts, 'allParsedTexts');
 }
 
 function searchText() {
@@ -20,17 +20,17 @@ function searchText() {
         text.agent.toLowerCase().includes(searchTerm) || 
         text.date.includes(searchTerm) || 
         text.time.includes(searchTerm) ||
-        text.description && text.description.toLowerCase().includes(searchTerm)
+        (text.description && text.description.toLowerCase().includes(searchTerm))
     );
-    displayParsedTexts(results);
+    displayParsedTexts(results, 'searchResult');
 }
 
-function displayParsedTexts(results) {
-    const allParsedTextsDiv = document.getElementById('allParsedTexts');
+function displayParsedTexts(results, elementId) {
+    const parsedTextsDiv = document.getElementById(elementId);
     if (results.length === 0) {
-        allParsedTextsDiv.innerHTML = '<p>No results found</p>';
+        parsedTextsDiv.innerHTML = '<p>No results found</p>';
     } else {
-        allParsedTextsDiv.innerHTML = results.map(result => `
+        parsedTextsDiv.innerHTML = results.map(result => `
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
