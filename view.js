@@ -108,8 +108,12 @@ function sendEmail(id) {
 }
 
 function createNewText() {
-    document.getElementById('createDate').value = '';
-    document.getElementById('createTime').value = '';
+    const now = new Date();
+    const currentDate = now.toLocaleDateString('en-CA'); // Format: YYYY-MM-DD
+    const currentTime = now.toLocaleTimeString('en-GB'); // Format: HH:MM:SS
+
+    document.getElementById('createDate').value = currentDate;
+    document.getElementById('createTime').value = currentTime;
     document.getElementById('createAgent').value = '';
     document.getElementById('createDescription').value = '';
     $('#createModal').modal('show');
