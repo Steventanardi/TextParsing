@@ -37,7 +37,6 @@ function parseAndDisplayText(text, parsedResultDiv) {
         const date = dateTimeMatch[1];
         const time = dateTimeMatch[2];
         const agent = dateTimeMatch[3];
-
         const description = body.trim();
 
         saveParsedText({ date, time, agent, description });
