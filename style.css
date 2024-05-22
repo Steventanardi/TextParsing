@@ -8,7 +8,7 @@
 }
 
 #allParsedTexts {
-    max-height: 400px; /* Set the maximum height */
+    max-height: 600px; /* Increase the maximum height to show more entries */
     overflow-y: auto; /* Enable vertical scrolling */
     margin-top: 20px;
     border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
