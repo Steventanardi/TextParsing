@@ -39,13 +39,13 @@ function parseAndStoreText() {
 
 function displayParsedTexts(entries, elementId) {
     const parsedResultDiv = document.getElementById(elementId);
-    parsedResultDiv.innerHTML = entries.map(entries => `
+    parsedResultDiv.innerHTML = entries.map(Entry => `
         <div class="card mb-3">
             <div class="card-body">
-                <h5 class="card-title"><strong>Date:</strong> ${entries.date}</h5>
-                <p class="card-text"><strong>Time:</strong> ${entries.time}</p>
-                <p class="card-text"><strong>Agent:</strong> ${entries.agent}</p>
-                <p class="card-text"><strong>Description:</strong> ${entries.description || 'N/A'}</p>
+                <h5 class="card-title"><strong>Date:</strong> ${Entry.date}</h5>
+                <p class="card-text"><strong>Time:</strong> ${Entry.time}</p>
+                <p class="card-text"><strong>Agent:</strong> ${Entry.agent}</p>
+                <p class="card-text"><strong>Description:</strong> ${Entry.description || 'N/A'}</p>
             </div>
         </div>
     `).join('');
