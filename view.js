@@ -58,8 +58,6 @@ function editText(id) {
     const textToEdit = parsedTexts.find(text => text.id === id);
     if (textToEdit) {
         document.getElementById('editId').value = textToEdit.id;
-        document.getElementById('editDate').value = textToEdit.date;
-        document.getElementById('editTime').value = textToEdit.time;
         document.getElementById('editAgent').value = textToEdit.agent;
         document.getElementById('editDescription').value = textToEdit.description;
         $('#editModal').modal('show');
@@ -68,15 +66,13 @@ function editText(id) {
 
 function updateText() {
     const id = parseInt(document.getElementById('editId').value);
-    const date = document.getElementById('editDate').value;
-    const time = document.getElementById('editTime').value;
     const agent = document.getElementById('editAgent').value;
     const description = document.getElementById('editDescription').value;
 
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     const index = parsedTexts.findIndex(text => text.id === id);
     if (index !== -1) {
-        parsedTexts[index] = { id, date, time, agent, description };
+        parsedTexts[index] = { ...parsedTexts[index], agent, description };
         localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
         loadAllParsedTexts();
         $('#editModal').modal('hide');
@@ -114,4 +110,26 @@ function sendEmail(id) {
             });
         }
     }
+}
+
+function createNewText() {
+    document.getElementById('createDate').value = '';
+    document.getElementById('createTime').value = '';
+    document.getElementById('createAgent').value = '';
+    document.getElementById('createDescription').value = '';
+    $('#createModal').modal('show');
+}
+
+function saveNewText() {
+    const date = document.getElementById('createDate').value;
+    const time = document.getElementById('createTime').value;
+    const agent = document.getElementById('createAgent').value;
+    const description = document.getElementById('createDescription').value;
+
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    const newText = { id: Date.now(), date, time, agent, description };
+    parsedTexts.push(newText);
+    localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
+    loadAllParsedTexts();
+    $('#createModal').modal('hide');
 }
