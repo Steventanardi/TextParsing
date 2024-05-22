@@ -5,18 +5,16 @@ async function parseText() {
     const fileInput = document.getElementById('fileInput');
     const parsedResultDiv = document.getElementById('parsedResult');
 
-    let textToParse = inputText;
-
     if (fileInput.files.length > 0) {
         const file = fileInput.files[0];
         const reader = new FileReader();
         reader.onload = function(event) {
-            textToParse = event.target.result;
+            const textToParse = event.target.result;
             parseAndDisplayText(textToParse, parsedResultDiv);
         };
         reader.readAsText(file);
     } else {
-        parseAndDisplayText(textToParse, parsedResultDiv);
+        parseAndDisplayText(inputText, parsedResultDiv);
     }
 }
 
