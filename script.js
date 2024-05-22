@@ -161,3 +161,9 @@ function displayParsedTexts(results) {
         `).join('');
     }
 }
+
+function clearAllData() {
+    localStorage.removeItem('parsedTexts');
+    document.getElementById('parsedResult').innerHTML = '';
+    document.getElementById('searchResult').innerHTML = '';
+}
