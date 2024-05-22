@@ -89,15 +89,13 @@ function sendEmail(id) {
                 to_email: email,
                 from_name: 'Text Parsing App',
                 subject: 'Parsed Text Data',
-                message_html: `
-                    <p><strong>Date:</strong> ${textToSend.date}</p>
-                    <p><strong>Time:</strong> ${textToSend.time}</p>
-                    <p><strong>Agent:</strong> ${textToSend.agent}</p>
-                    <p><strong>Description:</strong> ${textToSend.description}</p>
-                `
+                date: textToSend.date,
+                time: textToSend.time,
+                agent: textToSend.agent,
+                description: textToSend.description
             };
 
-            emailjs.send('service_lrtdj3g', 'template_jdtqtxd', templateParams, 'mjzQpAoD6n3lOIIiC')
+            emailjs.send('service_lrtdj3g', 'template_jdtqtxd', templateParams, 'YOUR_PUBLIC_KEY')
                 .then(function(response) {
                     console.log('Email sent successfully:', response.status, response.text);
                     alert('Email sent successfully');
