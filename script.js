@@ -38,24 +38,19 @@ function parseAndDisplayText(text, parsedResultDiv) {
         const time = dateTimeMatch[2];
         const agent = dateTimeMatch[3];
 
-        const propertyDetails = parsePropertyText(body);
+        const description = body.trim();
 
-        saveParsedText({ date, time, agent, description: propertyDetails });
+        saveParsedText({ date, time, agent, description });
 
         return `<div class="card mb-3">
                     <div class="card-body">
                         <strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${agent}
-                        <p><strong>Description:</strong> ${propertyDetails || 'N/A'}</p>
+                        <p><strong>Description:</strong> ${description || 'N/A'}</p>
                     </div>
                 </div>`;
     }).filter(line => line !== '');
 
     parsedResultDiv.innerHTML = parsedMessages.join('');
-}
-
-function parsePropertyText(text) {
-    // Combine all the relevant information into the description
-    return text.trim();
 }
 
 function saveParsedText(parsedText) {
