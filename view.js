@@ -34,7 +34,7 @@ function displayParsedTexts(results, elementId) {
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
-                    <p class="card-text"><strong>Time:</strong> ${result.time}</p>
+                    <p class="card-text"><strong>Time:</strong> ${result.time}</h5>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
                     <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
                     <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
@@ -84,17 +84,6 @@ function updateText() {
         console.error('Text not found for update');
     }
 }
-
-function loadAllParsedTexts() {
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts, 'allParsedTexts');
-}
-
-function loadAllParsedTexts() {
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts, 'allParsedTexts');
-}
-
 
 function sendEmail(id) {
     const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
