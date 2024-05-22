@@ -17,19 +17,34 @@ function parseText() {
 }
 
 function parseAndDisplayText(text, parsedResultDiv) {
+    const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/;
+    const ltPattern = /LT\s*:\s*([\d\s]+m2)/i;
+    const lbPattern = /LB\s*:\s*([\d\s\+\-]+m2)/i;
+    const pricePattern = /Harga\s*([\d\w\s]+ per meter)/i;
+    const locationPattern = /Lokasi\s*:\s*([^\n]+)/i;
+    const shmPattern = /SHM\s*([^\n]+)/i;
+
     const parsedLines = text.split('\n').map(line => {
-        const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/;
-        const match = line.match(dateTimeAgentPattern);
-        if (match) {
-            const date = match[1];
-            const time = match[2];
-            const agent = match[3];
-            const lt = extractInfo(text, /LT\s*:\s*(\d+ m2)/);
-            const lb = extractInfo(text, /LB\s*:\s*(\+?-?\d+ m2)/);
-            const price = extractInfo(text, /Harga\s*:\s*([\d\w\s]+ per meter)/);
-            const location = extractInfo(text, /Lokasi\s*:\s*([^\n]+)/);
-            const shm = extractInfo(text, /SHM\s*:\s*([^\n]+)/);
+        const dateTimeMatch = line.match(dateTimeAgentPattern);
+        if (dateTimeMatch) {
+            const date = dateTimeMatch[1];
+            const time = dateTimeMatch[2];
+            const agent = dateTimeMatch[3];
+
+            const ltMatch = text.match(ltPattern);
+            const lbMatch = text.match(lbPattern);
+            const priceMatch = text.match(pricePattern);
+            const locationMatch = text.match(locationPattern);
+            const shmMatch = text.match(shmPattern);
+
+            const lt = ltMatch ? ltMatch[1] : 'N/A';
+            const lb = lbMatch ? lbMatch[1] : 'N/A';
+            const price = priceMatch ? priceMatch[1] : 'N/A';
+            const location = locationMatch ? locationMatch[1] : 'N/A';
+            const shm = shmMatch ? shmMatch[1] : 'N/A';
+
             saveParsedText({ date, time, agent, lt, lb, price, location, shm });
+
             return `<div class="card mb-3">
                         <div class="card-body">
                             <strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${agent}
@@ -45,11 +60,6 @@ function parseAndDisplayText(text, parsedResultDiv) {
     }).filter(line => line !== '');
 
     parsedResultDiv.innerHTML = parsedLines.join('');
-}
-
-function extractInfo(text, regex) {
-    const match = text.match(regex);
-    return match ? match[1] : 'N/A';
 }
 
 function saveParsedText(parsedText) {
