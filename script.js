@@ -114,11 +114,14 @@ function displayParsedTexts(results) {
 }
 
 function deleteText(id) {
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    parsedTexts = parsedTexts.filter(text => text.id !== id);
-    localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
-    loadAllParsedTexts();
+    if (confirm('Are you sure you want to delete this item?')) {
+        let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+        parsedTexts = parsedTexts.filter(text => text.id !== id);
+        localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
+        loadAllParsedTexts();
+    }
 }
+
 
 function editText(id) {
     const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
