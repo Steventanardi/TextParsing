@@ -1,36 +1,21 @@
-const apiUrl = 'http://localhost:5000';
-
 document.addEventListener('DOMContentLoaded', (event) => {
     loadAllParsedTexts();
 });
 
-async function loadAllParsedTexts() {
-    try {
-        const response = await fetch(`${apiUrl}/texts`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const results = await response.json();
-        console.log('All parsed texts:', results); // Log results for debugging
-        displayParsedTexts(results);
-    } catch (error) {
-        console.error('Error fetching all parsed texts:', error); // Log errors for debugging
-    }
+function loadAllParsedTexts() {
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    displayParsedTexts(parsedTexts);
 }
 
-async function searchText() {
-    const searchTerm = document.getElementById('searchTerm').value;
-    try {
-        const response = await fetch(`${apiUrl}/texts/search?term=${searchTerm}`);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const results = await response.json();
-        console.log('Search results:', results); // Log results for debugging
-        displayParsedTexts(results);
-    } catch (error) {
-        console.error('Error fetching search results:', error); // Log errors for debugging
-    }
+function searchText() {
+    const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    const results = parsedTexts.filter(text => 
+        text.agent.toLowerCase().includes(searchTerm) || 
+        text.date.includes(searchTerm) || 
+        text.time.includes(searchTerm)
+    );
+    displayParsedTexts(results);
 }
 
 function displayParsedTexts(results) {
@@ -52,33 +37,22 @@ function displayParsedTexts(results) {
     }
 }
 
-async function deleteText(id) {
-    try {
-        await fetch(`${apiUrl}/texts/${id}`, {
-            method: 'DELETE'
-        });
-        console.log('Deleted text with id:', id); // Log deletion
-        loadAllParsedTexts();
-    } catch (error) {
-        console.error('Error deleting text:', error); // Log errors for debugging
-    }
+function deleteText(id) {
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    parsedTexts = parsedTexts.filter(text => text.id !== id);
+    localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
+    loadAllParsedTexts();
 }
 
-async function editText(id) {
+function editText(id) {
     const date = prompt('Enter new date:');
     const time = prompt('Enter new time:');
     const agent = prompt('Enter new agent:');
-    try {
-        await fetch(`${apiUrl}/texts/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ date, time, agent })
-        });
-        console.log('Updated text with id:', id); // Log update
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    const index = parsedTexts.findIndex(text => text.id === id);
+    if (index !== -1) {
+        parsedTexts[index] = { id, date, time, agent };
+        localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
         loadAllParsedTexts();
-    } catch (error) {
-        console.error('Error updating text:', error); // Log errors for debugging
     }
 }
