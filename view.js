@@ -60,8 +60,6 @@ function editText(id) {
     const textToEdit = parsedTexts.find(text => text.id === id);
     if (textToEdit) {
         document.getElementById('editId').value = textToEdit.id;
-        document.getElementById('editDate').value = textToEdit.date;
-        document.getElementById('editTime').value = textToEdit.time;
         document.getElementById('editAgent').value = textToEdit.agent;
         document.getElementById('editDescription').value = textToEdit.description;
         $('#editModal').modal('show');
@@ -70,24 +68,26 @@ function editText(id) {
     }
 }
 
-
 function updateText() {
     const id = parseInt(document.getElementById('editId').value);
-    const date = document.getElementById('editDate').value;
-    const time = document.getElementById('editTime').value;
     const agent = document.getElementById('editAgent').value;
     const description = document.getElementById('editDescription').value;
 
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     const index = parsedTexts.findIndex(text => text.id === id);
     if (index !== -1) {
-        parsedTexts[index] = { id, date, time, agent, description };
+        parsedTexts[index] = { ...parsedTexts[index], agent, description };
         localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
         loadAllParsedTexts();
         $('#editModal').modal('hide');
     } else {
         console.error('Text not found for update');
     }
+}
+
+function loadAllParsedTexts() {
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    displayParsedTexts(parsedTexts, 'allParsedTexts');
 }
 
 function loadAllParsedTexts() {
