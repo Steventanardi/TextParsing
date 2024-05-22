@@ -18,19 +18,30 @@ function parseText() {
 
 function parseAndDisplayText(text, parsedResultDiv) {
     const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/;
+    const messages = text.split('\n').reduce((acc, line) => {
+        if (dateTimeAgentPattern.test(line)) {
+            acc.push([line]);
+        } else if (acc.length > 0) {
+            acc[acc.length - 1].push(line);
+        }
+        return acc;
+    }, []);
 
-    const messages = text.split('\n').filter(line => dateTimeAgentPattern.test(line));
-    const parsedMessages = messages.map((line, index, array) => {
-        const dateTimeMatch = line.match(dateTimeAgentPattern);
+    const parsedMessages = messages.map(messageLines => {
+        const header = messageLines[0];
+        const body = messageLines.slice(1).join(' ');
+
+        const dateTimeMatch = header.match(dateTimeAgentPattern);
+        if (!dateTimeMatch) return '';
+
         const date = dateTimeMatch[1];
         const time = dateTimeMatch[2];
         const agent = dateTimeMatch[3];
 
-        const messageText = array.slice(index + 1).join('\n').split(dateTimeAgentPattern)[0].trim();
-        const ltMatch = messageText.match(/LT\s*:\s*([\d\s]+m2)/i);
-        const lbMatch = messageText.match(/LB\s*:\s*([\d\s\+\-]+m2)/i);
-        const priceMatch = messageText.match(/Harga\s*([\d\w\s]+ per meter)/i);
-        const locationMatch = messageText.match(/Lokasi\s*:\s*([^\n]+)/i);
+        const ltMatch = body.match(/LT\s*:\s*([\d\s]+m2)/i);
+        const lbMatch = body.match(/LB\s*:\s*([\d\s\+\-]+m2)/i);
+        const priceMatch = body.match(/Harga\s*([\d\w\s]+ per meter)/i);
+        const locationMatch = body.match(/Lokasi\s*:\s*([^\n]+)/i);
 
         const lt = ltMatch ? ltMatch[1] : 'N/A';
         const lb = lbMatch ? lbMatch[1] : 'N/A';
@@ -48,7 +59,7 @@ function parseAndDisplayText(text, parsedResultDiv) {
                         <p><strong>Location:</strong> ${location}</p>
                     </div>
                 </div>`;
-    });
+    }).filter(line => line !== '');
 
     parsedResultDiv.innerHTML = parsedMessages.join('');
 }
