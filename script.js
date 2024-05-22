@@ -60,7 +60,6 @@ function parseAndDisplayText(text, parsedResultDiv) {
 }
 
 function parsePropertyText(text) {
-    // Apply regex to clean and capture information
     const propertyDetails = {
         price: null,
         location: null,
@@ -73,12 +72,12 @@ function parsePropertyText(text) {
 
     // Regular expressions to capture each detail
     const regexps = {
-        price: /\b(?:Harga|Hrg)\s*:\s*(.*)/i,
-        location: /\bLokasi\s*:\s*(.*)/i,
-        landArea: /\bLT\s*:\s*([\d,]+)\s*m2/i,
-        buildingArea: /\bLB\s*:\s*([\d,]+)\s*m2/i,
-        pln: /\bPLN\s*:\s*(.*)/i,
-        contact: /\bContact\s*:\s*(.*)/i,
+        price: /\b(?:harga|hrg)\s*:\s*(.*)/i,
+        location: /\blokasi\s*:\s*(.*)/i,
+        landArea: /\blt\s*:\s*([\d,]+)\s*m2/i,
+        buildingArea: /\blb\s*:\s*([\d,]+)\s*m2/i,
+        pln: /\bpln\s*:\s*(.*)/i,
+        contact: /\bcontact\s*:\s*(.*)/i,
         phone: /\bwa.me\/(\+\d+)/i,
     };
 
