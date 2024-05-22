@@ -34,11 +34,11 @@ function parseAndStoreText() {
     let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     storedEntries = storedEntries.concat(parsedEntries);
     localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
-    displayParsedTexts(storedEntries);
+    displayParsedTexts(storedEntries, 'parsedResult');
 }
 
-function displayParsedTexts(entries) {
-    const parsedResultDiv = document.getElementById('parsedResult');
+function displayParsedTexts(entries, elementId) {
+    const parsedResultDiv = document.getElementById(elementId);
     parsedResultDiv.innerHTML = entries.map(result => `
         <div class="card mb-3">
             <div class="card-body">
@@ -62,10 +62,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts);
+    displayParsedTexts(parsedTexts, 'parsedResult');
 }
-
-
 
 function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
