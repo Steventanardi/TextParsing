@@ -48,7 +48,7 @@ function displayParsedTexts(results) {
 
 function deleteText(id) {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    parsedTexts = parsedTexts.filter(text => text.id !== id);
+    parsedTexts = parsedTexts.filter(text => text.id !== id); // Removing the entry with the specific ID
     localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
     loadAllParsedTexts();
 }
@@ -88,7 +88,7 @@ function sendEmail(id) {
             const templateParams = {
                 to_email: email,
                 from_name: 'Text Parsing App',
-                to_name: 'Recipient', 
+                to_name: 'Recipient',
                 subject: 'Parsed Text Data',
                 date: textToSend.date,
                 time: textToSend.time,

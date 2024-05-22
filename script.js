@@ -1,20 +1,47 @@
-function parseText() {
-    const inputText = document.getElementById('inputText').value;
-    const fileInput = document.getElementById('fileInput');
-    const parsedResultDiv = document.getElementById('parsedResult');
+function parseText(text) {
+    const entries = [];
+    const lines = text.split('\n');
+    let currentEntry = null;
 
-    if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const textToParse = event.target.result;
-            parseAndDisplayText(textToParse, parsedResultDiv);
-        };
-        reader.readAsText(file);
-    } else {
-        parseAndDisplayText(inputText, parsedResultDiv);
+    for (let line of lines) {
+        // Match the line that contains date, time, and agent
+        const match = line.match(/^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{2}:\d{2}) - (.*?): (.*)$/);
+        if (match) {
+            // If there is a current entry, push it to the entries array
+            if (currentEntry) {
+                entries.push(currentEntry);
+            }
+            // Start a new entry
+            currentEntry = {
+                id: Date.now() + Math.random(), // Unique ID
+                date: match[1],
+                time: match[2],
+                agent: match[3],
+                description: match[4] // Initialize with the first line of the description
+            };
+        } else if (currentEntry) {
+            // Append the line to the description of the current entry
+            currentEntry.description += '\n' + line;
+        }
     }
+
+    // Push the last entry if exists
+    if (currentEntry) {
+        entries.push(currentEntry);
+    }
+
+    return entries;
 }
+
+function parseAndStoreText() {
+    const text = document.getElementById('inputText').value;
+    const parsedEntries = parseText(text);
+    let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    storedEntries = storedEntries.concat(parsedEntries);
+    localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
+    loadAllParsedTexts();
+}
+
 
 function parseAndDisplayText(text, parsedResultDiv) {
     const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/i;
