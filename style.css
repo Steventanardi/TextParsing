@@ -19,8 +19,6 @@
     margin-bottom: 10px;
 }
 
-
-
 #parsedResult {
     max-height: 600px; /* Set the maximum height to show more entries */
     overflow-y: auto; /* Enable vertical scrolling */
