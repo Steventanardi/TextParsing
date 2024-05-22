@@ -2,9 +2,26 @@ const apiUrl = 'http://localhost:5000';
 
 async function parseText() {
     const inputText = document.getElementById('inputText').value;
+    const fileInput = document.getElementById('fileInput');
     const parsedResultDiv = document.getElementById('parsedResult');
 
-    const parsedLines = inputText.split('\n').map(line => {
+    let textToParse = inputText;
+
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            textToParse = event.target.result;
+            parseAndDisplayText(textToParse, parsedResultDiv);
+        };
+        reader.readAsText(file);
+    } else {
+        parseAndDisplayText(textToParse, parsedResultDiv);
+    }
+}
+
+function parseAndDisplayText(text, parsedResultDiv) {
+    const parsedLines = text.split('\n').map(line => {
         const dateTimeAgentPattern = /^\d{1,2}\/\d{1,2}\/\d{2}, \d{1,2}:\d{2} - (.+?):/;
         const match = line.match(dateTimeAgentPattern);
         if (match) {
