@@ -10,6 +10,7 @@ async function parseText() {
         const reader = new FileReader();
         reader.onload = function(event) {
             const textToParse = event.target.result;
+            console.log('File content:', textToParse); // Log the file content for debugging
             parseAndDisplayText(textToParse, parsedResultDiv);
         };
         reader.readAsText(file);
