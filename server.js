@@ -9,7 +9,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get('/texts', (req, res) => {
-    db.query('SELECT * FROM parsed_texts', (err, results) => {
+    db.query('SELECT * FROM parsed_texts ORDER BY STR_TO_DATE(date, "%m/%d/%y") DESC', (err, results) => {
         if (err) throw err;
         console.log('Fetched all texts:', results); // Log fetched results
         res.json(results);
@@ -18,7 +18,7 @@ app.get('/texts', (req, res) => {
 
 app.get('/texts/search', (req, res) => {
     const { term } = req.query;
-    db.query('SELECT * FROM parsed_texts WHERE agent LIKE ? OR date LIKE ? OR time LIKE ?', [`%${term}%`, `%${term}%`, `%${term}%`], (err, results) => {
+    db.query('SELECT * FROM parsed_texts WHERE agent LIKE ? OR date LIKE ? OR time LIKE ? ORDER BY STR_TO_DATE(date, "%m/%d/%y") DESC', [`%${term}%`, `%${term}%`, `%${term}%`], (err, results) => {
         if (err) throw err;
         console.log('Search results for term:', term, results); // Log search results
         res.json(results);
