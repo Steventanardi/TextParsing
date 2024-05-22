@@ -34,7 +34,7 @@ function parseAndStoreText() {
     let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     storedEntries = storedEntries.concat(parsedEntries);
     localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
-    displayParsedTexts(parsedEntries);
+    displayParsedTexts(storedEntries);
 }
 
 function displayParsedTexts(entries) {
@@ -65,6 +65,7 @@ function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     displayParsedTexts(parsedTexts);
 }
+
 
 function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
