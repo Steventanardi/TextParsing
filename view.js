@@ -37,7 +37,6 @@ function displayParsedTexts(results, elementId) {
                     <p class="card-text"><strong>Time:</strong> ${result.time}</h5>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
                     <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
-                    <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
                     <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
                     <button onclick="sendEmail(${result.id})" class="btn btn-info btn-sm">E-Mail</button>
                 </div>
@@ -52,36 +51,6 @@ function deleteText(id) {
         parsedTexts = parsedTexts.filter(text => text.id !== id);
         localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
         loadAllParsedTexts();
-    }
-}
-
-function editText(id) {
-    const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const textToEdit = parsedTexts.find(text => text.id === id);
-    if (textToEdit) {
-        document.getElementById('editId').value = textToEdit.id;
-        document.getElementById('editAgent').value = textToEdit.agent;
-        document.getElementById('editDescription').value = textToEdit.description;
-        $('#editModal').modal('show');
-    } else {
-        console.error('Text not found for editing');
-    }
-}
-
-function updateText() {
-    const id = parseInt(document.getElementById('editId').value);
-    const agent = document.getElementById('editAgent').value;
-    const description = document.getElementById('editDescription').value;
-
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const index = parsedTexts.findIndex(text => text.id === id);
-    if (index !== -1) {
-        parsedTexts[index] = { ...parsedTexts[index], agent, description };
-        localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
-        loadAllParsedTexts();
-        $('#editModal').modal('hide');
-    } else {
-        console.error('Text not found for update');
     }
 }
 
