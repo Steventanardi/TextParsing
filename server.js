@@ -1,56 +1,70 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const db = require('./db');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
+const dataFilePath = path.join(__dirname, 'parsed_texts.json');
 
 app.use(cors());
 app.use(bodyParser.json());
 
+const readDataFromFile = () => {
+    if (!fs.existsSync(dataFilePath)) {
+        return [];
+    }
+    const data = fs.readFileSync(dataFilePath, 'utf8');
+    return JSON.parse(data);
+};
+
+const writeDataToFile = (data) => {
+    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
+};
+
 app.get('/texts', (req, res) => {
-    db.query('SELECT * FROM parsed_texts ORDER BY STR_TO_DATE(date, "%m/%d/%y") DESC', (err, results) => {
-        if (err) throw err;
-        console.log('Fetched all texts:', results); // Log fetched results
-        res.json(results);
-    });
+    const data = readDataFromFile();
+    res.json(data);
 });
 
 app.get('/texts/search', (req, res) => {
     const { term } = req.query;
-    db.query('SELECT * FROM parsed_texts WHERE agent LIKE ? OR date LIKE ? OR time LIKE ? ORDER BY STR_TO_DATE(date, "%m/%d/%y") DESC', [`%${term}%`, `%${term}%`, `%${term}%`], (err, results) => {
-        if (err) throw err;
-        console.log('Search results for term:', term, results); // Log search results
-        res.json(results);
-    });
+    const data = readDataFromFile();
+    const results = data.filter(item => 
+        item.agent.includes(term) || item.date.includes(term) || item.time.includes(term)
+    );
+    res.json(results);
 });
 
 app.post('/texts', (req, res) => {
     const { date, time, agent } = req.body;
-    db.query('INSERT INTO parsed_texts (date, time, agent) VALUES (?, ?, ?)', [date, time, agent], (err, result) => {
-        if (err) throw err;
-        console.log('Inserted text:', { id: result.insertId, date, time, agent }); // Log inserted text
-        res.json({ id: result.insertId, date, time, agent });
-    });
+    const data = readDataFromFile();
+    const newText = { id: Date.now(), date, time, agent };
+    data.push(newText);
+    writeDataToFile(data);
+    res.json(newText);
 });
 
 app.put('/texts/:id', (req, res) => {
     const { id } = req.params;
     const { date, time, agent } = req.body;
-    db.query('UPDATE parsed_texts SET date = ?, time = ?, agent = ? WHERE id = ?', [date, time, agent, id], (err, result) => {
-        if (err) throw err;
-        console.log('Updated text:', { id, date, time, agent }); // Log updated text
-        res.json({ id, date, time, agent });
-    });
+    const data = readDataFromFile();
+    const index = data.findIndex(item => item.id === parseInt(id));
+    if (index !== -1) {
+        data[index] = { id: parseInt(id), date, time, agent };
+        writeDataToFile(data);
+        res.json(data[index]);
+    } else {
+        res.status(404).json({ message: 'Text not found' });
+    }
 });
 
 app.delete('/texts/:id', (req, res) => {
     const { id } = req.params;
-    db.query('DELETE FROM parsed_texts WHERE id = ?', [id], (err, result) => {
-        if (err) throw err;
-        console.log('Deleted text with id:', id); // Log deleted text
-        res.json({ id });
-    });
+    const data = readDataFromFile();
+    const newData = data.filter(item => item.id !== parseInt(id));
+    writeDataToFile(newData);
+    res.json({ id: parseInt(id) });
 });
 
 const PORT = 5000;
