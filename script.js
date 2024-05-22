@@ -40,18 +40,12 @@ function parseAndDisplayText(text, parsedResultDiv) {
 
         const propertyDetails = parsePropertyText(body);
 
-        saveParsedText({ date, time, agent, ...propertyDetails });
+        saveParsedText({ date, time, agent, description: propertyDetails });
 
         return `<div class="card mb-3">
                     <div class="card-body">
                         <strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${agent}
-                        <p><strong>Price:</strong> ${propertyDetails.price || 'N/A'}</p>
-                        <p><strong>Location:</strong> ${propertyDetails.location || 'N/A'}</p>
-                        <p><strong>LT:</strong> ${propertyDetails.landArea || 'N/A'}</p>
-                        <p><strong>LB:</strong> ${propertyDetails.buildingArea || 'N/A'}</p>
-                        <p><strong>PLN:</strong> ${propertyDetails.pln || 'N/A'}</p>
-                        <p><strong>Contact:</strong> ${propertyDetails.contact || 'N/A'}</p>
-                        <p><strong>Phone:</strong> ${propertyDetails.phone || 'N/A'}</p>
+                        <p><strong>Description:</strong> ${propertyDetails || 'N/A'}</p>
                     </div>
                 </div>`;
     }).filter(line => line !== '');
@@ -60,39 +54,8 @@ function parseAndDisplayText(text, parsedResultDiv) {
 }
 
 function parsePropertyText(text) {
-    const propertyDetails = {
-        price: null,
-        location: null,
-        landArea: null,
-        buildingArea: null,
-        pln: null,
-        contact: null,
-        phone: null,
-    };
-
-    // Regular expressions to capture each detail
-    const regexps = {
-        price: /\b(?:harga|hrg)\s*:\s*(.*)/i,
-        location: /\blokasi\s*:\s*(.*)/i,
-        landArea: /\blt\s*:\s*([\d,]+)\s*m2/i,
-        buildingArea: /\blb\s*:\s*([\d,]+)\s*m2/i,
-        pln: /\bpln\s*:\s*(.*)/i,
-        contact: /\bcontact\s*:\s*(.*)/i,
-        phone: /\bwa.me\/(\+\d+)/i,
-    };
-
-    // Convert the text to lowercase to ensure case-insensitive matching
-    const lowerCaseText = text.toLowerCase();
-
-    // Loop through each regular expression and apply it to the text
-    for (const [key, regexp] of Object.entries(regexps)) {
-        const match = lowerCaseText.match(regexp);
-        if (match) {
-            propertyDetails[key] = match[1].trim();
-        }
-    }
-
-    return propertyDetails;
+    // Combine all the relevant information into the description
+    return text.trim();
 }
 
 function saveParsedText(parsedText) {
@@ -114,10 +77,7 @@ function searchText() {
         text.agent.toLowerCase().includes(searchTerm) || 
         text.date.includes(searchTerm) || 
         text.time.includes(searchTerm) ||
-        text.landArea && text.landArea.toLowerCase().includes(searchTerm) ||
-        text.buildingArea && text.buildingArea.toLowerCase().includes(searchTerm) ||
-        text.price && text.price.toLowerCase().includes(searchTerm) ||
-        text.location && text.location.toLowerCase().includes(searchTerm)
+        text.description && text.description.toLowerCase().includes(searchTerm)
     );
     displaySearchResults(results);
 }
@@ -133,13 +93,7 @@ function displaySearchResults(results) {
                     <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
                     <p class="card-text"><strong>Time:</strong> ${result.time}</p>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
-                    <p class="card-text"><strong>Price:</strong> ${result.price || 'N/A'}</p>
-                    <p class="card-text"><strong>Location:</strong> ${result.location || 'N/A'}</p>
-                    <p class="card-text"><strong>LT:</strong> ${result.landArea || 'N/A'}</p>
-                    <p class="card-text"><strong>LB:</strong> ${result.buildingArea || 'N/A'}</p>
-                    <p class="card-text"><strong>PLN:</strong> ${result.pln || 'N/A'}</p>
-                    <p class="card-text"><strong>Contact:</strong> ${result.contact || 'N/A'}</p>
-                    <p class="card-text"><strong>Phone:</strong> ${result.phone || 'N/A'}</p>
+                    <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
                     <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
                 </div>
             </div>

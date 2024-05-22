@@ -37,9 +37,9 @@ app.get('/texts/search', (req, res) => {
 });
 
 app.post('/texts', (req, res) => {
-    const { date, time, agent } = req.body;
+    const { date, time, agent, description } = req.body;
     const data = readDataFromFile();
-    const newText = { id: Date.now(), date, time, agent };
+    const newText = { id: Date.now(), date, time, agent, description };
     data.push(newText);
     writeDataToFile(data);
     res.json(newText);
@@ -47,11 +47,11 @@ app.post('/texts', (req, res) => {
 
 app.put('/texts/:id', (req, res) => {
     const { id } = req.params;
-    const { date, time, agent } = req.body;
+    const { date, time, agent, description } = req.body;
     const data = readDataFromFile();
     const index = data.findIndex(item => item.id === parseInt(id));
     if (index !== -1) {
-        data[index] = { id: parseInt(id), date, time, agent };
+        data[index] = { id: parseInt(id), date, time, agent, description };
         writeDataToFile(data);
         res.json(data[index]);
     } else {

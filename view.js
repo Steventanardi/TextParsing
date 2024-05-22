@@ -20,10 +20,7 @@ function searchText() {
         text.agent.toLowerCase().includes(searchTerm) || 
         text.date.includes(searchTerm) || 
         text.time.includes(searchTerm) ||
-        text.landArea && text.landArea.toLowerCase().includes(searchTerm) ||
-        text.buildingArea && text.buildingArea.toLowerCase().includes(searchTerm) ||
-        text.price && text.price.toLowerCase().includes(searchTerm) ||
-        text.location && text.location.toLowerCase().includes(searchTerm)
+        text.description && text.description.toLowerCase().includes(searchTerm)
     );
     displayParsedTexts(results);
 }
@@ -39,13 +36,7 @@ function displayParsedTexts(results) {
                     <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
                     <p class="card-text"><strong>Time:</strong> ${result.time}</p>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
-                    <p class="card-text"><strong>LT:</strong> ${result.landArea || 'N/A'}</p>
-                    <p class="card-text"><strong>LB:</strong> ${result.buildingArea || 'N/A'}</p>
-                    <p class="card-text"><strong>Price:</strong> ${result.price || 'N/A'}</p>
-                    <p class="card-text"><strong>Location:</strong> ${result.location || 'N/A'}</p>
-                    <p class="card-text"><strong>PLN:</strong> ${result.pln || 'N/A'}</p>
-                    <p class="card-text"><strong>Contact:</strong> ${result.contact || 'N/A'}</p>
-                    <p class="card-text"><strong>Phone:</strong> ${result.phone || 'N/A'}</p>
+                    <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
                     <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
                 </div>
             </div>
