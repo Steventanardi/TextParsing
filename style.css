@@ -1,3 +1,14 @@
+#parsedResult {
+    max-height: 400px; /* Set the maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 20px;
+    border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
+    padding: 10px; /* Optional: Add some padding for better layout */
+}
+
+.card {
+    margin-bottom: 10px;
+}
 .top-left-button {
     position: absolute;
     top: 20px;
@@ -8,7 +19,7 @@
 }
 
 #allParsedTexts {
-    max-height: 600px; /* Increase the maximum height to show more entries */
+    max-height: 400px; /* Set the maximum height */
     overflow-y: auto; /* Enable vertical scrolling */
     margin-top: 20px;
     border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
