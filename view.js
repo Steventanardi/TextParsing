@@ -48,7 +48,7 @@ function displayParsedTexts(results) {
 
 function deleteText(id) {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    parsedTexts = parsedTexts.filter(text => text.id !== id); // Removing the entry with the specific ID
+    parsedTexts = parsedTexts.filter(text => text.id !== id);
     localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
     loadAllParsedTexts();
 }
@@ -110,8 +110,8 @@ function sendEmail(id) {
 
 function createNewText() {
     const now = new Date();
-    const currentDate = now.toLocaleDateString('en-CA'); // Format: YYYY-MM-DD
-    const currentTime = now.toLocaleTimeString('en-GB'); // Format: HH:MM:SS
+    const currentDate = now.toLocaleDateString('en-CA');
+    const currentTime = now.toLocaleTimeString('en-GB');
 
     document.getElementById('createDate').value = currentDate;
     document.getElementById('createTime').value = currentTime;
