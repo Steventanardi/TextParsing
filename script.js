@@ -38,7 +38,7 @@ function parseAndStoreText() {
         console.log("Previously stored entries before adding new:", storedEntries); // Debug: log stored entries before update
         storedEntries = storedEntries.concat(parsedEntries);
         localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
-        displayParsedTexts(storedEntries, 'parsedResult');
+        displayParsedTexts(storedEntries, 'parsedTexts');
         console.log("All stored entries after update:", storedEntries); // Debug: log all stored entries after update
     } catch (e) {
         console.error('Failed to parse or save parsed texts', e);
@@ -66,9 +66,8 @@ function displayParsedTexts(entries, elementId) {
 
 function clearAllData() {
     localStorage.removeItem('parsedTexts');
-    document.getElementById('parsedResult').innerHTML = 'All stored data has been cleared.';
+    document.getElementById('parsedTexts').innerHTML = 'All stored data has been cleared.';
 }
-
 
 document.addEventListener('DOMContentLoaded', (event) => {
     loadAllParsedTexts();
@@ -76,7 +75,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts, 'parsedResult');
+    displayParsedTexts(parsedTexts, 'parsedTexts');
 }
 
 
