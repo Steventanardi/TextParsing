@@ -54,7 +54,6 @@ function displayParsedTexts(entries) {
 function clearAllData() {
     localStorage.removeItem('parsedTexts');
     document.getElementById('parsedResult').innerHTML = '';
-    document.getElementById('searchResult').innerHTML = '';
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -65,6 +64,7 @@ function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     displayParsedTexts(parsedTexts);
 }
+
 
 
 function searchText() {
