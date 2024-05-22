@@ -37,7 +37,9 @@ function displayParsedTexts(results) {
                     <p class="card-text"><strong>Time:</strong> ${result.time}</p>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
                     <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
+                    <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
                     <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
+                    <button onclick="sendEmail(${result.id})" class="btn btn-info btn-sm">E-Mail</button>
                 </div>
             </div>
         `).join('');
@@ -49,4 +51,67 @@ function deleteText(id) {
     parsedTexts = parsedTexts.filter(text => text.id !== id);
     localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
     loadAllParsedTexts();
+}
+
+function editText(id) {
+    const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    const textToEdit = parsedTexts.find(text => text.id === id);
+    if (textToEdit) {
+        document.getElementById('editId').value = textToEdit.id;
+        document.getElementById('editDate').value = textToEdit.date;
+        document.getElementById('editTime').value = textToEdit.time;
+        document.getElementById('editAgent').value = textToEdit.agent;
+        document.getElementById('editDescription').value = textToEdit.description;
+        $('#editModal').modal('show');
+    }
+}
+
+function updateText() {
+    const id = parseInt(document.getElementById('editId').value);
+    const date = document.getElementById('editDate').value;
+    const time = document.getElementById('editTime').value;
+    const agent = document.getElementById('editAgent').value;
+    const description = document.getElementById('editDescription').value;
+
+    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    const index = parsedTexts.findIndex(text => text.id === id);
+    if (index !== -1) {
+        parsedTexts[index] = { id, date, time, agent, description };
+        localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
+        loadAllParsedTexts();
+        $('#editModal').modal('hide');
+    }
+}
+
+function sendEmail(id) {
+    const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+    const textToSend = parsedTexts.find(text => text.id === id);
+    if (textToSend) {
+        const email = prompt("Enter the recipient's email address:");
+        if (email) {
+            fetch('http://localhost:5000/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    textData: `
+                        Date: ${textToSend.date}
+                        Time: ${textToSend.time}
+                        Agent: ${textToSend.agent}
+                        Description: ${textToSend.description}
+                    `
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to send email');
+            });
+        }
+    }
 }
