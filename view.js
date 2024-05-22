@@ -88,7 +88,7 @@ function sendEmail(id) {
             const templateParams = {
                 to_email: email,
                 from_name: 'Text Parsing App',
-                to_name: 'Recipient', // Add this line if keeping to_name in template
+                to_name: 'Recipient', 
                 subject: 'Parsed Text Data',
                 date: textToSend.date,
                 time: textToSend.time,
