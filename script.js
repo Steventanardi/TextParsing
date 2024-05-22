@@ -31,11 +31,17 @@ function parseText(text) {
 function parseAndStoreText() {
     const text = document.getElementById('inputText').value;
     const parsedEntries = parseText(text);
-    let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    storedEntries = storedEntries.concat(parsedEntries);
-    localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
-    displayParsedTexts(storedEntries, 'parsedResult');
+    try {
+        let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
+        storedEntries = storedEntries.concat(parsedEntries);
+        localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
+        displayParsedTexts(storedEntries, 'parsedResult');
+    } catch (e) {
+        console.error('Failed to parse or save parsed texts', e);
+        // Optionally, handle the error more gracefully in the UI
+    }
 }
+
 
 function displayParsedTexts(entries, elementId) {
     const parsedResultDiv = document.getElementById(elementId);
