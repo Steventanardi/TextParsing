@@ -9,7 +9,111 @@
 </head>
 <body>
     <button onclick="window.location.href='index.html'" class="btn btn-primary top-left-button">Home</button>
-    <button onclick="createNewText()" class="btn btn-success top-right-button">Create</button>
+    <button onclick="createNewText()" class="btn b<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>View Parsed Texts</title>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+            <link rel="stylesheet" href="style.css">
+        </head>
+        <body>
+            <button onclick="window.location.href='index.html'" class="btn btn-primary top-left-button">Home</button>
+            <button onclick="createNewText()" class="btn btn-success top-right-button">Create</button>
+            <div class="container mt-5">
+                <h1 class="text-center">View Parsed Texts</h1>
+                <div class="form-group mt-3">
+                    <input type="text" id="searchTerm" class="form-control" placeholder="Search...">
+                </div>
+                <button onclick="searchText()" class="btn btn-secondary btn-block">Search</button>
+                <div id="searchResult" class="mt-3"></div>
+                <div id="allParsedTexts" class="mt-3 scrollable-container"></div>
+                <button onclick="clearAllData()" class="btn btn-danger btn-block mt-3">Clear All Data</button>
+            </div>
+        
+            <!-- Modal for Editing -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Text</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editForm">
+                                <input type="hidden" id="editId">
+                                <div class="form-group">
+                                    <label for="editAgent">Agent</label>
+                                    <input type="text" class="form-control" id="editAgent">
+                                </div>
+                                <div class="form-group">
+                                    <label for="editDescription">Description</label>
+                                    <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateText()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Modal for Creating -->
+            <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createModalLabel">Create New Text</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createForm">
+                                <div class="form-group">
+                                    <label for="createDate">Date</label>
+                                    <input type="text" class="form-control" id="createDate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="createTime">Time</label>
+                                    <input type="text" class="form-control" id="createTime">
+                                </div>
+                                <div class="form-group">
+                                    <label for="createAgent">Agent</label>
+                                    <input type="text" class="form-control" id="createAgent">
+                                </div>
+                                <div class="form-group">
+                                    <label for="createDescription">Description</label>
+                                    <textarea class="form-control" id="createDescription" rows="3"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="saveNewText()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+            <script type="text/javascript">
+                (function(){
+                    emailjs.init("YOUR_USER_ID");  // Replace with your EmailJS user ID
+                })();
+            </script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="view.js"></script>
+        </body>
+        </html>
+        tn-success top-right-button">Create</button>
     <div class="container mt-5">
         <h1 class="text-center">View Parsed Texts</h1>
         <div class="form-group mt-3">

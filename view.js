@@ -97,7 +97,7 @@ function sendEmail(id) {
                 `
             };
 
-            emailjs.send('service_lrtdj3g', 'YOUR_TEMPLATE_ID', templateParams)
+            emailjs.send('service_lrtdj3g', 'template_jdtqtxd', templateParams, 'mjzQpAoD6n3lOIIiC')
                 .then(function(response) {
                     console.log('Email sent successfully:', response.status, response.text);
                     alert('Email sent successfully');
