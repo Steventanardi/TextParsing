@@ -17,3 +17,11 @@
     height: 40px; /* Set a fixed height */
     font-size: 16px; /* Set the font size */
 }
+
+#allParsedTexts {
+    max-height: 400px; /* Set the maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 20px;
+    border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
+    padding: 10px; /* Optional: Add some padding for better layout */
+}
