@@ -7,8 +7,8 @@
     font-size: 16px;
 }
 
-#parsedResult {
-    max-height: 600px; /* Set the maximum height to show more entries */
+.scrollable-container {
+    max-height: 600px; /* Increase the maximum height to show more entries */
     overflow-y: auto; /* Enable vertical scrolling */
     margin-top: 20px;
     border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
@@ -19,8 +19,17 @@
     margin-bottom: 10px;
 }
 
+
+#parsedResult {
+    max-height: 600px; /* Set the maximum height to show more entries */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-top: 20px;
+    border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
+    padding: 10px; /* Optional: Add some padding for better layout */
+}
+
 #allParsedTexts {
-    max-height: 600px;
+    max-height: 1000px;
     overflow-y: auto;
     margin-top: 20px;
     border: 1px solid #ccc;
