@@ -74,7 +74,8 @@ function updateText() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     const index = parsedTexts.findIndex(text => text.id === id);
     if (index !== -1) {
-        parsedTexts[index] = { ...parsedTexts[index], agent, description };
+        parsedTexts[index].agent = agent;
+        parsedTexts[index].description = description;
         localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
         loadAllParsedTexts();
         $('#editModal').modal('hide');
