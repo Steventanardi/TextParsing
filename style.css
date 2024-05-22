@@ -9,3 +9,11 @@
 .card {
     margin-bottom: 10px;
 }
+.top-left-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100px; /* Set a fixed width */
+    height: 40px; /* Set a fixed height */
+    font-size: 16px; /* Set the font size */
+}
