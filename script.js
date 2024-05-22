@@ -18,13 +18,14 @@ function parseText() {
 
 function parseAndDisplayText(text, parsedResultDiv) {
     const parsedLines = text.split('\n').map(line => {
-        const dateTimeAgentPattern = /^\d{1,2}\/\d{1,2}\/\d{2}, \d{1,2}:\d{2} - (.+?):/;
+        const dateTimeAgentPattern = /^(\d{1,2}\/\d{1,2}\/\d{2}), (\d{1,2}:\d{2}) - (.+?):/;
         const match = line.match(dateTimeAgentPattern);
         if (match) {
-            const [dateTime, agent] = line.split(' - ');
-            const [date, time] = dateTime.split(', ');
-            saveParsedText({ date, time, agent: match[1] });
-            return `<div class="card mb-3"><div class="card-body"><strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${match[1]}</div></div>`;
+            const date = match[1];
+            const time = match[2];
+            const agent = match[3];
+            saveParsedText({ date, time, agent });
+            return `<div class="card mb-3"><div class="card-body"><strong>Date:</strong> ${date} <strong>Time:</strong> ${time} <strong>Agent:</strong> ${agent}</div></div>`;
         }
         return '';
     }).filter(line => line !== '');
