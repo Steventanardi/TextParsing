@@ -1,19 +1,15 @@
-body {
-    background-color: #f8f9fa;
+#parsedResult {
+    max-height: 400px; /* Set the maximum height */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    margin-top: 20px;
 }
 
-.container {
-    max-width: 600px;
-    margin-top: 50px;
+#allParsedTexts {
+    max-height: 600px; /* Set the maximum height */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    margin-top: 20px;
 }
 
-#parsedResult, #searchResult, #allParsedTexts {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.btn-block {
-    margin-top: 10px;
+.card {
+    margin-bottom: 10px;
 }
