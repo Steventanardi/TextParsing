@@ -34,7 +34,21 @@ function parseAndStoreText() {
     let storedEntries = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     storedEntries = storedEntries.concat(parsedEntries);
     localStorage.setItem('parsedTexts', JSON.stringify(storedEntries));
-    loadAllParsedTexts();
+    displayParsedTexts(parsedEntries);
+}
+
+function displayParsedTexts(entries) {
+    const parsedResultDiv = document.getElementById('parsedResult');
+    parsedResultDiv.innerHTML = entries.map(entry => `
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Date:</strong> ${entry.date}</h5>
+                <p class="card-text"><strong>Time:</strong> ${entry.time}</p>
+                <p class="card-text"><strong>Agent:</strong> ${entry.agent}</p>
+                <p class="card-text"><strong>Description:</strong> ${entry.description || 'N/A'}</p>
+            </div>
+        </div>
+    `).join('');
 }
 
 function clearAllData() {
@@ -43,10 +57,15 @@ function clearAllData() {
     document.getElementById('searchResult').innerHTML = '';
 }
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    loadAllParsedTexts();
+});
+
 function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     displayParsedTexts(parsedTexts);
 }
+
 
 function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
