@@ -1,4 +1,8 @@
-/* Position the buttons in a line */
+body.dark-theme {
+    background-color: #121212;
+    color: #ffffff;
+}
+
 .button-container {
     position: absolute;
     top: 20px;
@@ -14,25 +18,26 @@
     margin-right: 10px;
 }
 
-/* Scrollable container for parsed texts */
 .scrollable-container {
-    max-height: 600px; /* Increase the maximum height to show more entries */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 600px;
+    overflow-y: auto;
     margin-top: 20px;
-    border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
-    padding: 10px; /* Optional: Add some padding for better layout */
+    border: 1px solid #ccc;
+    padding: 10px;
 }
 
 .card {
     margin-bottom: 10px;
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 #parsedResult {
-    max-height: 600px; /* Set the maximum height to show more entries */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 600px;
+    overflow-y: auto;
     margin-top: 20px;
-    border: 1px solid #ccc; /* Optional: Add a border for better visual distinction */
-    padding: 10px; /* Optional: Add some padding for better layout */
+    border: 1px solid #ccc;
+    padding: 10px;
 }
 
 #allParsedTexts {
@@ -41,4 +46,30 @@
     margin-top: 20px;
     border: 1px solid #ccc;
     padding: 10px;
+}
+
+.modal-content {
+    background-color: #2c2c2c;
+    color: #ffffff;
+}
+
+.btn-primary, .btn-secondary, .btn-success, .btn-danger {
+    border: none;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: #3b5998;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-success {
+    background-color: #28a745;
+}
+
+.btn-danger {
+    background-color: #dc3545;
 }
