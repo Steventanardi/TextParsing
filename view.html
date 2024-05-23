@@ -8,11 +8,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-theme">
-    <div class="button-container">
-        <button onclick="window.location.href='index.html'" class="btn btn-primary">Home</button>
-        <button onclick="createNewText()" class="btn btn-success ml-2">Create</button>
-        <button onclick="showDeleteAllModal()" class="btn btn-danger ml-2">Delete All Data</button>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Text Parsing App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="view.html">Data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="createNewText()">Create</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showDeleteAllModal()">Delete All Data</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container mt-5">
         <h1 class="text-center">View Parsed Texts</h1>
         <div class="form-group mt-3">
@@ -113,12 +130,6 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function(){
-            emailjs.init("mjzQpAoD6n3lOIIiC");
-        })();
-    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
