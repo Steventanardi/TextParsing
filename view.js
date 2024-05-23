@@ -1,18 +1,28 @@
-function clearAllData() {
-    localStorage.removeItem('parsedTexts');
-    document.getElementById('allParsedTexts').innerHTML = '';
-    document.getElementById('searchResult').innerHTML = '';
+// Function to show the confirmation modal for deleting all data
+function showDeleteAllModal() {
+    $('#deleteAllModal').modal('show');
 }
 
+// Function to delete all data after confirmation
+function deleteAllData() {
+    localStorage.removeItem('parsedTexts');
+    document.getElementById('allParsedTexts').innerHTML = 'All stored data has been cleared.';
+    document.getElementById('searchResult').innerHTML = '';
+    $('#deleteAllModal').modal('hide');
+}
+
+// Load all parsed texts when the document is ready
 document.addEventListener('DOMContentLoaded', (event) => {
     loadAllParsedTexts();
 });
 
+// Function to load all parsed texts
 function loadAllParsedTexts() {
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     displayParsedTexts(parsedTexts, 'allParsedTexts');
 }
 
+// Function to search texts based on a search term
 function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
     let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
@@ -25,6 +35,7 @@ function searchText() {
     displayParsedTexts(results, 'searchResult');
 }
 
+// Function to display parsed texts
 function displayParsedTexts(results, elementId) {
     const parsedTextsDiv = document.getElementById(elementId);
     if (results.length === 0) {
@@ -46,6 +57,7 @@ function displayParsedTexts(results, elementId) {
     }
 }
 
+// Function to delete a single text entry
 function deleteText(id) {
     if (confirm('Are you sure you want to delete this item?')) {
         let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
@@ -55,6 +67,7 @@ function deleteText(id) {
     }
 }
 
+// Function to edit a text entry
 function editText(id) {
     const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     const textToEdit = parsedTexts.find(text => text.id === id);
@@ -66,6 +79,7 @@ function editText(id) {
     }
 }
 
+// Function to update a text entry
 function updateText() {
     const id = parseInt(document.getElementById('editId').value);
     const agent = document.getElementById('editAgent').value;
@@ -82,6 +96,7 @@ function updateText() {
     }
 }
 
+// Function to send an email with a text entry
 function sendEmail(id) {
     const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
     const textToSend = parsedTexts.find(text => text.id === id);
@@ -111,6 +126,7 @@ function sendEmail(id) {
     }
 }
 
+// Function to create a new text entry
 function createNewText() {
     const now = new Date();
     const currentDate = now.toLocaleDateString('en-CA');
@@ -123,6 +139,7 @@ function createNewText() {
     $('#createModal').modal('show');
 }
 
+// Function to save a new text entry
 function saveNewText() {
     const date = document.getElementById('createDate').value;
     const time = document.getElementById('createTime').value;

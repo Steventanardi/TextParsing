@@ -11,6 +11,7 @@
     <div class="button-container">
         <button onclick="window.location.href='index.html'" class="btn btn-primary">Home</button>
         <button onclick="createNewText()" class="btn btn-success ml-2">Create</button>
+        <button onclick="showDeleteAllModal()" class="btn btn-danger ml-2">Delete All Data</button>
     </div>
     <div class="container mt-5">
         <h1 class="text-center">View Parsed Texts</h1>
@@ -86,6 +87,27 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="saveNewText()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Delete All Confirmation -->
+    <div class="modal fade" id="deleteAllModal" tabindex="-1" aria-labelledby="deleteAllModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAllModalLabel">Confirm Delete All</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete all data?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteAllData()">Delete All</button>
                 </div>
             </div>
         </div>
