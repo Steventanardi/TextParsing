@@ -1,41 +1,33 @@
-// Function to show the confirmation modal for deleting all data
-function showDeleteAllModal() {
+async function showDeleteAllModal() {
     $('#deleteAllModal').modal('show');
 }
 
-// Function to delete all data after confirmation
-function deleteAllData() {
-    localStorage.removeItem('parsedTexts');
+async function deleteAllData() {
+    const response = await fetch('http://localhost:5000/texts');
+    const texts = await response.json();
+    for (const text of texts) {
+        await fetch(`http://localhost:5000/texts/${text._id}`, {
+            method: 'DELETE'
+        });
+    }
     document.getElementById('allParsedTexts').innerHTML = 'All stored data has been cleared.';
     document.getElementById('searchResult').innerHTML = '';
     $('#deleteAllModal').modal('hide');
 }
 
-// Load all parsed texts when the document is ready
-document.addEventListener('DOMContentLoaded', (event) => {
-    loadAllParsedTexts();
+document.addEventListener('DOMContentLoaded', async (event) => {
+    const response = await fetch('http://localhost:5000/texts');
+    const parsedTexts = await response.json();
+    displayParsedTexts(parsedTexts, 'allParsedTexts');
 });
 
-// Function to load all parsed texts
-function loadAllParsedTexts() {
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    displayParsedTexts(parsedTexts, 'allParsedTexts');
-}
-
-// Function to search texts based on a search term
-function searchText() {
+async function searchText() {
     const searchTerm = document.getElementById('searchTerm').value.toLowerCase();
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const results = parsedTexts.filter(text => 
-        text.agent.toLowerCase().includes(searchTerm) || 
-        text.date.includes(searchTerm) || 
-        text.time.includes(searchTerm) ||
-        (text.description && text.description.toLowerCase().includes(searchTerm))
-    );
+    const response = await fetch(`http://localhost:5000/texts/search?term=${searchTerm}`);
+    const results = await response.json();
     displayParsedTexts(results, 'searchResult');
 }
 
-// Function to display parsed texts
 function displayParsedTexts(results, elementId) {
     const parsedTextsDiv = document.getElementById(elementId);
     if (results.length === 0) {
@@ -48,58 +40,57 @@ function displayParsedTexts(results, elementId) {
                     <p class="card-text"><strong>Time:</strong> ${result.time}</p>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
                     <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
-                    <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
-                    <button onclick="deleteText(${result.id})" class="btn btn-danger btn-sm">Delete</button>
-                    <button onclick="sendEmail(${result.id})" class="btn btn-info btn-sm">E-Mail</button>
+                    <button onclick="editText('${result._id}')" class="btn btn-warning btn-sm">Edit</button>
+                    <button onclick="deleteText('${result._id}')" class="btn btn-danger btn-sm">Delete</button>
+                    <button onclick="sendEmail('${result._id}')" class="btn btn-info btn-sm">E-Mail</button>
                 </div>
             </div>
         `).join('');
     }
 }
 
-// Function to delete a single text entry
-function deleteText(id) {
+async function deleteText(id) {
     if (confirm('Are you sure you want to delete this item?')) {
-        let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-        parsedTexts = parsedTexts.filter(text => text.id !== id);
-        localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
+        await fetch(`http://localhost:5000/texts/${id}`, {
+            method: 'DELETE'
+        });
         loadAllParsedTexts();
     }
 }
 
-// Function to edit a text entry
-function editText(id) {
-    const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const textToEdit = parsedTexts.find(text => text.id === id);
+async function editText(id) {
+    const response = await fetch(`http://localhost:5000/texts`);
+    const texts = await response.json();
+    const textToEdit = texts.find(text => text._id === id);
     if (textToEdit) {
-        document.getElementById('editId').value = textToEdit.id;
+        document.getElementById('editId').value = textToEdit._id;
         document.getElementById('editAgent').value = textToEdit.agent;
         document.getElementById('editDescription').value = textToEdit.description;
         $('#editModal').modal('show');
     }
 }
 
-// Function to update a text entry
-function updateText() {
-    const id = parseInt(document.getElementById('editId').value);
+async function updateText() {
+    const id = document.getElementById('editId').value;
     const agent = document.getElementById('editAgent').value;
     const description = document.getElementById('editDescription').value;
 
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const index = parsedTexts.findIndex(text => text.id === id);
-    if (index !== -1) {
-        parsedTexts[index].agent = agent;
-        parsedTexts[index].description = description;
-        localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
-        loadAllParsedTexts();
-        $('#editModal').modal('hide');
-    }
+    await fetch(`http://localhost:5000/texts/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ agent, description })
+    });
+
+    loadAllParsedTexts();
+    $('#editModal').modal('hide');
 }
 
-// Function to send an email with a text entry
-function sendEmail(id) {
-    const parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const textToSend = parsedTexts.find(text => text.id === id);
+async function sendEmail(id) {
+    const response = await fetch(`http://localhost:5000/texts`);
+    const texts = await response.json();
+    const textToSend = texts.find(text => text._id === id);
     if (textToSend) {
         const email = prompt("Enter the recipient's email address:");
         if (email) {
@@ -126,8 +117,7 @@ function sendEmail(id) {
     }
 }
 
-// Function to create a new text entry
-function createNewText() {
+async function createNewText() {
     const now = new Date();
     const currentDate = now.toLocaleDateString('en-CA');
     const currentTime = now.toLocaleTimeString('en-GB');
@@ -139,17 +129,28 @@ function createNewText() {
     $('#createModal').modal('show');
 }
 
-// Function to save a new text entry
-function saveNewText() {
+async function saveNewText() {
     const date = document.getElementById('createDate').value;
     const time = document.getElementById('createTime').value;
     const agent = document.getElementById('createAgent').value;
     const description = document.getElementById('createDescription').value;
 
-    let parsedTexts = JSON.parse(localStorage.getItem('parsedTexts')) || [];
-    const newText = { id: Date.now(), date, time, agent, description };
-    parsedTexts.push(newText);
-    localStorage.setItem('parsedTexts', JSON.stringify(parsedTexts));
+    const newText = { date, time, agent, description };
+
+    await fetch('http://localhost:5000/texts', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newText)
+    });
+
     loadAllParsedTexts();
     $('#createModal').modal('hide');
+}
+
+async function loadAllParsedTexts() {
+    const response = await fetch('http://localhost:5000/texts');
+    const parsedTexts = await response.json();
+    displayParsedTexts(parsedTexts, 'allParsedTexts');
 }
