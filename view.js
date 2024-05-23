@@ -45,7 +45,7 @@ function displayParsedTexts(results, elementId) {
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title"><strong>Date:</strong> ${result.date}</h5>
-                    <p class="card-text"><strong>Time:</strong> ${result.time}</h5>
+                    <p class="card-text"><strong>Time:</strong> ${result.time}</p>
                     <p class="card-text"><strong>Agent:</strong> ${result.agent}</p>
                     <p class="card-text"><strong>Description:</strong> ${result.description || 'N/A'}</p>
                     <button onclick="editText(${result.id})" class="btn btn-warning btn-sm">Edit</button>
