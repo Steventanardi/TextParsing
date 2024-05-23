@@ -1,70 +1,62 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const { MongoClient } = require('mongodb');
 
 const app = express();
-const dataFilePath = path.join(__dirname, 'parsed_texts.json');
+const url = 'mongodb://localhost:27017';
+const dbName = 'textParsingApp';
+let db;
+
+MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+    if (err) throw err;
+    db = client.db(dbName);
+    console.log('Connected to database');
+});
 
 app.use(cors());
 app.use(bodyParser.json());
 
-const readDataFromFile = () => {
-    if (!fs.existsSync(dataFilePath)) {
-        return [];
-    }
-    const data = fs.readFileSync(dataFilePath, 'utf8');
-    return JSON.parse(data);
-};
-
-const writeDataToFile = (data) => {
-    fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
-};
-
-app.get('/texts', (req, res) => {
-    const data = readDataFromFile();
-    res.json(data);
+app.get('/texts', async (req, res) => {
+    const texts = await db.collection('texts').find().toArray();
+    res.json(texts);
 });
 
-app.get('/texts/search', (req, res) => {
+app.get('/texts/search', async (req, res) => {
     const { term } = req.query;
-    const data = readDataFromFile();
-    const results = data.filter(item => 
-        item.agent.includes(term) || item.date.includes(term) || item.time.includes(term)
+    const texts = await db.collection('texts').find({
+        $or: [
+            { agent: new RegExp(term, 'i') },
+            { date: new RegExp(term, 'i') },
+            { time: new RegExp(term, 'i') },
+            { description: new RegExp(term, 'i') }
+        ]
+    }).toArray();
+    res.json(texts);
+});
+
+app.post('/texts', async (req, res) => {
+    const { date, time, agent, description } = req.body;
+    const newText = { date, time, agent, description };
+    const result = await db.collection('texts').insertOne(newText);
+    res.json(result.ops[0]);
+});
+
+app.put('/texts/:id', async (req, res) => {
+    const { id } = req.params;
+    const { date, time, agent, description } = req.body;
+    const result = await db.collection('texts').findOneAndUpdate(
+        { _id: new MongoClient.ObjectID(id) },
+        { $set: { date, time, agent, description } },
+        { returnOriginal: false }
     );
-    res.json(results);
+    res.json(result.value);
 });
 
-app.post('/texts', (req, res) => {
-    const { date, time, agent, description } = req.body;
-    const data = readDataFromFile();
-    const newText = { id: Date.now(), date, time, agent, description };
-    data.push(newText);
-    writeDataToFile(data);
-    res.json(newText);
-});
-
-app.put('/texts/:id', (req, res) => {
+app.delete('/texts/:id', async (req, res) => {
     const { id } = req.params;
-    const { date, time, agent, description } = req.body;
-    const data = readDataFromFile();
-    const index = data.findIndex(item => item.id === parseInt(id));
-    if (index !== -1) {
-        data[index] = { id: parseInt(id), date, time, agent, description };
-        writeDataToFile(data);
-        res.json(data[index]);
-    } else {
-        res.status(404).json({ message: 'Text not found' });
-    }
-});
-
-app.delete('/texts/:id', (req, res) => {
-    const { id } = req.params;
-    const data = readDataFromFile();
-    const newData = data.filter(item => item.id !== parseInt(id));
-    writeDataToFile(newData);
-    res.json({ id: parseInt(id) });
+    await db.collection('texts').deleteOne({ _id: new MongoClient.ObjectID(id) });
+    res.json({ id });
 });
 
 const PORT = 5000;
